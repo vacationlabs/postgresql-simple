@@ -12,6 +12,7 @@ import Database.PostgreSQL.Simple.HStore
 import Control.Exception
 import Control.DeepSeq
 import System.Random
+import Debug.Trace
 
 instance NFData HStoreMap where
   rnf (HStoreMap m) = rnf m
@@ -22,7 +23,8 @@ instance NFData SomeException where
 main :: IO ()
 main = do
   t <- getCurrentTime
-  bracket (connectPostgreSQL "host=localhost port=5432 user=opaleye password=opaleye") close $ \conn -> do 
+  bracket (connectPostgreSQL "host=localhost port=5432 user=opaleye password=opaleye") close $ \conn -> do
+    -- catch (putStrLn =<< (fmap show $ complicatedQueryWithError conn)) (\ (e :: SomeException) -> traceIO $ "Error: " ++ (show e))
     defaultMain
       [ bgroup "complicatedQuery"
         [ -- bench "without error" $ nfIO $ complicatedQuery conn
