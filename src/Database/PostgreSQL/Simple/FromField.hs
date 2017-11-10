@@ -641,7 +641,7 @@ returnError mkErr f msg = do
                (tableOid f)
                (maybe "" B.unpack (name f))
                (show (typeOf (undefined :: a)))
-               msg
+               (msg ++ (show callStack))
 
 atto :: forall a. (Typeable a, HasCallStack)
      => Compat -> Parser a -> Field -> Maybe ByteString
